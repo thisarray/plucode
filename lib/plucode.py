@@ -6,6 +6,56 @@ import os.path
 import re
 import unittest
 
+_CODE_CARRIER_PHRASES = [
+    'code',
+    'find',
+    'identify',
+    'I want',
+    'look for',
+    'look up',
+    'number',
+    'scout',
+    'search',
+    'search for',
+    'what is'
+]
+"""List of carrier phrases preceding a PLU code."""
+
+_CODE_EXAMPLES = [
+    '4011',
+    '4 0 1 1',
+    'four zero one one',
+    '94011',
+    '9 4 0 1 1',
+    'nine four zero one one'
+]
+"""List of specific code examples to attach to carrier phrases."""
+
+_DESCRIPTION_CARRIER_PHRASES = [
+    'code for',
+    'find',
+    'identify',
+    'I want',
+    'look for',
+    'look up',
+    'number for',
+    'scout',
+    'search',
+    'search for',
+    'what is'
+]
+"""List of carrier phrases preceding a description."""
+
+_DESCRIPTION_EXAMPLES = [
+    'banana',
+    'bananas',
+    'yellow banana',
+    'yellow bananas',
+    'yellow cavendish banana',
+    'yellow cavendish bananas'
+]
+"""List of specific description examples to attach to carrier phrases."""
+
 _KEYWORD_PATTERN = re.compile(r"""(?P<keyword>[\w']+)""", re.VERBOSE)
 """Regular expression pattern to pull out keywords."""
 
@@ -1374,6 +1424,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '-l', '--lookup', nargs='+', default=[],
         help='print the PLU code matching the specified keywords')
+    parser.add_argument(
+        '-t', '--training', action='store_true',
+        help='print training phrases')
     args = parser.parse_args()
 
     if args.code.isdigit() and (len(args.code) > 3):
@@ -1383,6 +1436,13 @@ if __name__ == '__main__':
     elif len(args.lookup) > 0:
         for code in get_code(args.lookup):
             print(code)
+    elif args.training:
+        import itertools
+        for carriers, examples in [
+            (_CODE_CARRIER_PHRASES, _CODE_EXAMPLES),
+            (_DESCRIPTION_CARRIER_PHRASES, _DESCRIPTION_EXAMPLES)]:
+            for t in itertools.product(carriers, examples):
+                print(' '.join(list(t)))
     else:
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(_UnitTest)
         unittest.TextTestRunner(verbosity=2).run(suite)
