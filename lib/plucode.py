@@ -475,6 +475,8 @@ _PLU_MAP = {
     "3518": "oksana xenia pears",
     "3519": "r10 45 wild twist apples",
     "3520": "sk 20 smileball goldies onique sweetnothings loving onions",
+    "3521": "regal d5 100 karma apples",
+    "3522": "hw624 pears",
     "3600": "antares apples",
     "3601": "huaguan autumn glory apples",
     "3602": "belgica apples",
