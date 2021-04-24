@@ -1,4 +1,4 @@
-"""Wrap the function in a Flask application for testing."""
+"""Test the function wrapped in the Flask application."""
 
 import unittest
 
@@ -14,20 +14,13 @@ main._PASSWORD = 'password'
 TEST_URL = '/'
 """String URL under which the function is mapped."""
 
-def test_view():
-    """Call the function with the Flask request."""
-    return main.google(flask.request)
-
-app = flask.Flask(__name__)
-app.add_url_rule(TEST_URL, 'test', test_view, methods=['POST'])
-
 class FunctionTest(unittest.TestCase):
     def setUp(self):
         # Enable Flask debugging
-        app.debug = True
+        main.app.debug = True
 
         # Wrap the WSGI application in a TestApp
-        self.app = webtest.TestApp(app)
+        self.app = webtest.TestApp(main.app)
         self.app.authorization = ('Basic', (main._USERNAME, main._PASSWORD))
 
     def test_bad_authentication(self):

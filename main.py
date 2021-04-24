@@ -143,3 +143,10 @@ def google(request):
             return _build_google_response(', '.join(codes))
     else:
         return _build_google_response()
+
+def root_view():
+    """Call the function with the Flask request."""
+    return google(flask.request)
+
+app = flask.Flask(__name__)
+app.add_url_rule('/', 'root', root_view, methods=['POST'])
